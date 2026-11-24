@@ -26,9 +26,12 @@ stdenvNoCC.mkDerivation {
   '';
 
   preFixup = ''
+    # The host Mesa driver may require a newer glibc than this pinned runtime.
+    # Avoid loading it through WebKit's DMA-BUF renderer on Wayland.
     gappsWrapperArgs+=(
       --prefix PATH : ${lib.makeBinPath [ xdg-utils ]}
       --set PALRYN_NIX_MANAGED 1
+      --set-default WEBKIT_DISABLE_DMABUF_RENDERER 1
     )
   '';
 
